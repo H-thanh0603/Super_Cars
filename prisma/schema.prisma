@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  fullName     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Car {
+  id               String        @id @default(cuid())
+  name             String
+  slug             String        @unique
+  brand            String
+  model            String
+  year             Int
+  price            BigInt
+  mileageKm        Int
+  color            String
+  condition        String
+  fuelType         String
+  transmission     String
+  horsepower       Int
+  engine           String
+  seats            Int
+  drivetrain       String
+  shortDescription String
+  description      String
+  heroTag          String
+  isFeatured       Boolean       @default(false)
+  isAvailable      Boolean       @default(true)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  images           CarImage[]
+  leads            Lead[]
+  appointments     Appointment[]
+
+  @@index([brand])
+  @@index([price])
+  @@index([isFeatured])
+}
+
+model CarImage {
+  id        String   @id @default(cuid())
+  carId     String
+  imageUrl  String
+  alt       String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  car       Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+
+  @@index([carId, sortOrder])
+}
+
+model Lead {
+  id          String   @id @default(cuid())
+  carId       String?
+  fullName    String
+  phone       String
+  email       String?
+  note        String?
+  budgetLabel String?
+  source      String   @default("website")
+  status      String   @default("NEW")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  car         Car?     @relation(fields: [carId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Appointment {
+  id            String   @id @default(cuid())
+  carId         String
+  fullName      String
+  phone         String
+  email         String?
+  preferredDate DateTime
+  preferredSlot String
+  note          String?
+  status        String   @default("PENDING")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  car           Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([preferredDate])
+}
