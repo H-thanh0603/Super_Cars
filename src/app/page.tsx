@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 import { CarCard } from "@/components/car-card";
 import { MotionShell } from "@/components/motion-shell";
 import { Faux3DCarStage } from "@/components/faux-3d-car-stage";
+import { BrandMarquee } from "@/components/brand-marquee";
 
 export default async function HomePage() {
   const [featuredCars, latestCars, inventoryStats] = await Promise.all([
@@ -54,6 +55,35 @@ export default async function HomePage() {
     "Chốt nhanh nhóm xe phù hợp theo ngân sách, hình ảnh và mục tiêu sử dụng.",
     "Giữ lịch xem riêng, lên sẵn xe và route tư vấn trước khi anh tới showroom.",
     "Tách rõ thông tin kỹ thuật, lịch sử sử dụng và phần đàm phán để anh đỡ mất sức.",
+  ];
+
+  const marqueeItems = [
+    "private concierge",
+    "inspection story",
+    "cinematic inventory",
+    "verified shortlist",
+    "luxury sedan",
+    "ev flagship",
+    "supercar emotion",
+    "family suv premium",
+  ];
+
+  const collectionLanes = [
+    {
+      title: "Grand Touring",
+      text: "Nhóm xe cân bằng giữa cảm xúc hình ảnh và khả năng dùng thật mỗi ngày.",
+      href: "/xe?brand=Porsche",
+    },
+    {
+      title: "Executive Arrival",
+      text: "Sedan và SUV cho khách cần hình ảnh chỉnh chu, cabin yên và quyết định nhanh.",
+      href: "/xe?brand=Mercedes-Benz",
+    },
+    {
+      title: "Electric Edge",
+      text: "Những mẫu xe công nghệ cao cho người muốn bước vào EV mà vẫn giữ wow factor.",
+      href: "/xe?fuel=ELECTRIC",
+    },
   ];
 
   return (
@@ -117,6 +147,33 @@ export default async function HomePage() {
                 />
               </div>
             ) : null}
+          </section>
+
+          <section className="container-shell pb-6" data-reveal>
+            <BrandMarquee items={marqueeItems} />
+          </section>
+
+          <section className="section-space pt-10" data-reveal>
+            <div className="container-shell grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+              <div className="space-y-4">
+                <p className="text-sm uppercase tracking-[0.18em] text-white/42">curated lanes</p>
+                <h2 className="display-title text-4xl font-semibold text-white md:text-5xl">
+                  Thêm nhiều cửa vào storefront để người xem tự nhận ra gu xe của mình nhanh hơn.
+                </h2>
+                <p className="max-w-2xl text-base leading-8 text-white/62">
+                  Đây là lớp wow-pass thứ hai: không chỉ đẹp hơn mà còn có nhiều hướng điều hướng giống một showroom có chủ ý.
+                </p>
+              </div>
+              <div className="grid gap-4 md:grid-cols-3" data-stagger-group>
+                {collectionLanes.map((lane) => (
+                  <Link key={lane.title} href={lane.href} className="luxury-panel rounded-[26px] p-5 transition hover:-translate-y-1 hover:border-[var(--gold)]/25">
+                    <p className="text-xs uppercase tracking-[0.18em] text-[var(--gold)]">lane</p>
+                    <p className="display-title mt-3 text-2xl font-semibold text-white">{lane.title}</p>
+                    <p className="mt-4 text-sm leading-7 text-white/62">{lane.text}</p>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </section>
 
           <section className="section-space border-y border-white/6 bg-white/[0.02]" data-reveal>

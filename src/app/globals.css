@@ -118,7 +118,28 @@ select {
   color: #fff;
 }
 
+.marquee-shell {
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+
+.marquee-track {
+  animation: marquee-scroll 26s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
 .light-panel {
   background: var(--light-surface);
   color: var(--light-text);
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
